@@ -1,6 +1,6 @@
 package models.manager;
 
-public class Animal {
+public abstract class Animal {
     private String code;
     private String name;
     private double price;
@@ -9,7 +9,7 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String code, String name, double price,int quantity) {
+    public Animal(String code, String name, double price, int quantity) {
         this.code = code;
         this.name = name;
         this.price = price;
@@ -47,4 +47,7 @@ public class Animal {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+
 }
+

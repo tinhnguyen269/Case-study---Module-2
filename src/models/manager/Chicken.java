@@ -4,8 +4,8 @@ public class Chicken extends Animal {
     private String origin;
 
 
-    public Chicken(String code, String name, double price,int quantity, String origin) {
-        super(code, name, price,quantity);
+    public Chicken(String code, String name, double price, int quantity, String origin) {
+        super(code, name, price, quantity);
         this.origin = origin;
     }
 
@@ -20,4 +20,15 @@ public class Chicken extends Animal {
         this.origin = origin;
     }
 
+
+    public String toString() {
+        return "(Chicken) " +
+                "Mã: " + this.getCode()+
+                ", Tên: " + this.getName() +
+                ", Giá: " + this.getPrice() +
+                ", Số lượng:" + this.getQuantity() +
+                ", Xuất xứ: " + this.getOrigin() ;
+    }
+
 }
+

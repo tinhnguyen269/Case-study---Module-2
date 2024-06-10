@@ -1,59 +1,46 @@
 package reponsitories;
 
-import models.manager.Chicken;
+import models.manager.Animal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class ManagerReponsitory {
-    private static final Chicken[] chickens = new Chicken[1000];
-    private static int count = 0;
+    ArrayList<Animal> animals = new ArrayList<>();
 
-    static {
-        chickens[0] = new Chicken("1", "Gà đông tảo", 10000, 100, "Viet nam");
-        count = 1;
+    public boolean addAnimal(Animal animal) {
+        for (Animal ani : animals) {
+            if (animal.getCode().equals(ani.getCode())) {
+                return false;
+            }
+        }
+        animals.add(animal);
+        return true;
     }
 
-    public void addChicken(Chicken chicken) {
-        chickens[count] = chicken;
-        count++;
+    public List<Animal> getAll() {
+        return new ArrayList<>(animals);
     }
 
-    public Chicken[] getAll() {
-        Chicken[] result = Arrays.copyOf(chickens, count);
-        return result;
-    }
-
-    public Chicken findByCode(String code) {
-        for (Chicken chicken : chickens) {
-            if (chicken.getCode().equals(code)) {
-                return chicken;
+    public Animal findByCode(String code) {
+        for (Animal animal : animals) {
+            if (animal.getCode().equals(code)) {
+                return animal;
             }
         }
         return null;
     }
 
-    public void deleteChicken(Chicken chicken) {
-        for (int i = 0; i < count; i++) {
-            if (chickens[i].getCode() == chicken.getCode()) {
-                for (int j = i; j < count - 1; j++) {
-                    chickens[j] = chickens[j + 1];
-                }
-                chickens[count - 1] = null;
-                count--;
+    public Animal findByName(String name) {
+        for (Animal animal : animals) {
+            if (animal.getCode().equals(name)) {
+                return animal;
             }
         }
+        return null;
     }
 
-    public boolean findAnimal(String find) {
-        for (int i = 0; i < count; i++) {
-            if (chickens[i].getName().equals(find) || chickens[i].getCode().equals(find)) {
-                return true;
-            }
-        }
-        return false;
-
+    public void deleteAnimal(Animal animalByCode) {
+        animals.remove(animalByCode);
     }
-
-
 }

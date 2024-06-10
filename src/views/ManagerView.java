@@ -1,15 +1,15 @@
 package views;
 
+import models.manager.Animal;
 import models.manager.Chicken;
 import models.manager.Pig;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ManagerView {
-    Chicken chicken = new Chicken();
-    LoginView loginView = new LoginView();
 
-    public int view() {
+    public int viewMenu() {
         System.out.println("____________Quản lí___________");
         System.out.println("1.Thêm mới");
         System.out.println("2.Sửa thông tin");
@@ -38,8 +38,8 @@ public class ManagerView {
         int quantity = Integer.parseInt(sc.nextLine());
         System.out.print("Nhập Xuất xứ:");
         String origin = sc.nextLine();
-        Chicken chicken = new Chicken(code, name, price, quantity, origin);
-        return chicken;
+        Chicken animal = new Chicken(code, name, price, quantity, origin);
+        return animal;
     }
 
     public void viewMessage(boolean result) {
@@ -50,10 +50,16 @@ public class ManagerView {
         }
     }
 
-    public void viewALL(Chicken[] chickens) {
-        System.out.println("Danh sách gà trong trang trại:");
+
+    public void viewALL(Chicken[] chickens, Pig[] pigs) {
+        System.out.println("Danh sách vật nuôi trong trang trại:");
+        System.out.println("...............Gà..............");
         for (Chicken chicken : chickens) {
             System.out.println(inforChicken(chicken));
+        }
+        System.out.println("...............Lợn..............");
+        for (Pig pig : pigs) {
+            System.out.println(inforPig(pig));
         }
     }
 
@@ -61,11 +67,23 @@ public class ManagerView {
         return "Mã:" + chicken.getCode() + " ,Tên:" + chicken.getName() + " ,Giá:" + chicken.getPrice() + " ,số lượng:" + chicken.getQuantity() + " ,Xuất xứ:" + chicken.getOrigin();
     }
 
+    private String inforPig(Pig pig) {
+        return "Mã:" + pig.getCode() + " ,Tên:" + pig.getName() + " ,Giá:" + pig.getPrice() + " ,số lượng:" + pig.getQuantity() + " ,Cân nặng:" + pig.getWeight();
+    }
+
+
     public String findByCode() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Nhập mã gà:");
+        System.out.print("Nhập mã:");
         String code = sc.nextLine();
         return code;
+    }
+
+    public String findByName() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập tên:");
+        String name = sc.nextLine();
+        return name;
     }
 
     public boolean viewConfirmDelete() {
@@ -80,7 +98,7 @@ public class ManagerView {
         }
     }
 
-    public Chicken updateChicken(Chicken chicken) {
+    public void updateAnimal(int choiceAnimal, Animal animal) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhập tên:");
         String name = sc.nextLine();
@@ -88,29 +106,33 @@ public class ManagerView {
         double price = Double.parseDouble(sc.nextLine());
         System.out.print("Nhập số lượng:");
         int quantity = Integer.parseInt(sc.nextLine());
-        System.out.print("Nhập Xuất xứ:");
-        String origin = sc.nextLine();
-        chicken.setName(name);
-        chicken.setPrice(price);
-        chicken.setQuantity(quantity);
-        chicken.setOrigin(origin);
-        return chicken;
-
+        if(choiceAnimal==1){
+            if (animal instanceof Chicken) {
+                Chicken chicken = (Chicken) animal;
+                System.out.print("Nhập xuất xứ: ");
+                String origin = sc.nextLine();
+                chicken.setOrigin(origin);
+           }
+        }
+        if(choiceAnimal==2){
+            if (animal instanceof Pig) {
+                Pig pig = (Pig) animal;
+                System.out.print("Nhập cân nặng: ");
+                double weight = Double.parseDouble(sc.nextLine());
+                ((Pig) animal).setWeight(weight);
+            }
+        }
+        animal.setName(name);
+        animal.setPrice(price);
+        animal.setQuantity(quantity);
     }
 
-
-    public String findAnimal() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhập vào mã,tên: ");
-        String find = sc.nextLine();
-        return find;
-    }
 
     public int choiceAnimal() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Nhập lựa chọn: ");
-        System.out.println("1.Thêm gà");
-        System.out.println("2.Thêm lơn");
+        System.out.println("1.Chọn gà");
+        System.out.println("2.Chọn lợn");
+        System.out.print("Nhập lựa chọn: ");
         int choiceAnimal = sc.nextInt();
         return choiceAnimal;
 
@@ -127,10 +149,30 @@ public class ManagerView {
         System.out.print("Nhập số lượng:");
         int quantity = Integer.parseInt(sc.nextLine());
         System.out.print("Nhập cân nặng:");
-        double weight  = sc.nextDouble();
-        Pig pig = new Pig(code,name,price,quantity,weight);
-        return pig;
+        double weight = sc.nextDouble();
+        Pig animal = new Pig(code, name, price, quantity, weight);
+        return animal;
+    }
+
+    public void viewAll(List<Animal> animalList) {
+        for (Animal animal : animalList) {
+            System.out.println(animal);
+
+        }
+    }
+
+    public void DisplayFind(Animal animalByCode, Animal animalByName) {
+        System.out.println("Danh sách tìm thấy:");
+        if (animalByCode == null) {
+            System.out.print("");
+        } else {
+            System.out.println(animalByCode);
+        }
+        if (animalByName == null) {
+            System.out.println("");
+        } else {
+            System.out.println(animalByName);
+        }
     }
 }
-
 

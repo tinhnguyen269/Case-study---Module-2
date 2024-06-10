@@ -1,29 +1,34 @@
 package controllers;
 
+import models.manager.Animal;
 import models.manager.Chicken;
 import models.login.Login;
-import models.manager.Pig;
-import services.manager.ChickenService;
 import services.login.LoginService;
-import services.manager.PigService;
+import services.manager.impl.ManagerService;
 import views.CustomerView;
 import views.IndexView;
 import views.LoginView;
 import views.ManagerView;
 
+import java.util.List;
+
 public class MainController {
     public static void main(String[] args) {
         ManagerView managerView = new ManagerView();
-        ChickenService chickenService = new ChickenService();
+        ManagerService managerService = new ManagerService();
+
+
         IndexView indexView = new IndexView();
         CustomerView customerView = new CustomerView();
         LoginView loginView = new LoginView();
-        int choiceIndex, choiceManager, choiceCustomer,choiceAnimal;
-        Chicken chicken;
-        Pig pig;
+        int choiceIndex, choiceManager, choiceCustomer, choiceAnimal;
+
         Login login;
-        String code,find;
+        String code, find,name;
         boolean checkLogin;
+        Animal animal,animalByCode,animalByName;
+        boolean check = true;
+
 
 
         while (true) {
@@ -41,61 +46,64 @@ public class MainController {
                 while (!checkLogin);
 
                 while (true) {
-                    choiceManager = managerView.view();
+                    choiceManager = managerView.viewMenu();
                     switch (choiceManager) {
 // Thêm vật nuôi
                         case 1:
-                           choiceAnimal = managerView.choiceAnimal();
-                           switch (choiceAnimal){
-                               case 1:
-                                   chicken = managerView.viewAddChicken();
-                                   chickenService.addChiken(chicken);
-                                   managerView.viewMessage(true);
-                                   break;
-                               case 2:
-                                   pig = managerView.viewAddPig();
-                                   PigService.addPig(pig);
+                            choiceAnimal = managerView.choiceAnimal();
+                            if (choiceAnimal == 1) {
+                                animal = managerView.viewAddChicken();
+                                check = managerService.addAnimals(animal);
+                            }
+                            if (choiceAnimal == 2) {
+                                animal = managerView.viewAddPig();
+                                check = managerService.addAnimals(animal);
+                            }
 
-
-                           }
-
+                            if (check) {
+                                managerView.viewMessage(true);
+                            } else {
+                                managerView.viewMessage(false);
+                            }
+                            break;
 //  Sửa thông tin
                         case 2:
-                            code = managerView.findByCode();
-                            chicken = chickenService.findByCode(code);
-                            if (chicken == null) {
+                            choiceAnimal = managerView.choiceAnimal();
+                                code = managerView.findByCode();
+                                animalByCode = managerService.findByCode(code);
+                            if (animalByCode == null) {
                                 managerView.viewMessage(false);
                             } else {
-                                Chicken update = managerView.updateChicken(chicken);
+                                managerView.updateAnimal(choiceAnimal,animalByCode);
                             }
                             break;
 // Xóa vật nuôi
                         case 3:
                             code = managerView.findByCode();
-                            chicken = chickenService.findByCode(code);
-                            if (chicken == null) {
+                            animalByCode = managerService.findByCode(code);
+                            if (animalByCode == null) {
                                 managerView.viewMessage(false);
                             } else {
                                 boolean confirm = managerView.viewConfirmDelete();
                                 if (confirm) {
-                                    chickenService.deleteChicken(chicken);
+                                    managerService.deleteAnimal(animalByCode);
                                     managerView.viewMessage(true);
                                 }
                             }
                             break;
 // Hiển thị danh sách
                         case 4:
-                            Chicken[] chickens = ChickenService.getAll();
-                            managerView.viewALL(chickens);
+                            List<Animal> animalList =  managerService.getAll();
+                            managerView.viewAll(animalList);
                             break;
 
 //  Tìm kiếm
                         case 5:
-                            find = managerView.findAnimal();
-                            boolean check = ChickenService.findAnimal(find);
-                            if(check){
-
-                            }
+                                code = managerView.findByCode();
+                                name = managerView.findByName();
+                                animalByCode = managerService.findByCode(code);
+                                animalByName = managerService.findByName(name);
+                                managerView.DisplayFind(animalByCode,animalByName);
 
                             break;
 // Hiển thị danh sách vật nuôi đã bán

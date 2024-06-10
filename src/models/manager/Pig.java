@@ -18,4 +18,12 @@ public class Pig extends Animal{
     public void setWeight(double weight) {
         this.weight = weight;
     }
+    public String toString() {
+        return "(Pig) " +
+                "Mã: " + this.getCode()+
+                ", Tên: " + this.getName() +
+                ", Giá: " + this.getPrice() +
+                ", Số lượng: " + this.getQuantity() +
+                ", Cân nặng: " + this.getWeight() ;
+    }
 }
