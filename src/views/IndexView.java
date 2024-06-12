@@ -9,7 +9,13 @@ public class IndexView {
         System.out.println("1.Quản lí");
         System.out.println("2.Khách hàng");
         System.out.print("Nhập lựa chọn:");
-        int choiceIndex = Integer.parseInt(sc.nextLine());
-        return choiceIndex;
+        try{
+            int choiceIndex = Integer.parseInt(sc.nextLine());
+            return choiceIndex;
+        }catch (NumberFormatException e){
+            System.out.println("Nhap vao so");
+        }
+        return -1;
+
     }
 }
